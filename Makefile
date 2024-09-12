@@ -1,6 +1,6 @@
 # Compiler and flags
 CXX = g++
-CXXFLAGS = -I./src -I./third-party/includes  -std=c++17
+CXXFLAGS = -I./src -I./third-party/include -std=c++17 -w -DLLVM_VERSION_STRING="\"<LLVM_VERSION>\""
 LDFLAGS = -ldl -L./third-party/lib -Wl,-rpath=./third-party/lib -lxla_extension  # Add third-party libraries here
 
 # Directories
