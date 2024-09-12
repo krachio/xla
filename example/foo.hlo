@@ -1,0 +1,17 @@
+HloModule jit_fn, entry_computation_layout={(f32[4]{0}, f32[4]{0}, f32[4]{0})->f32[4]{0}}, allow_spmd_sharding_propagation_to_output={true}
+
+%fused_computation (param_0.1: f32[4], param_1.1: f32[]) -> f32[4] {
+  %param_1.1 = f32[] parameter(1)
+  %broadcast.0 = f32[4]{0} broadcast(f32[] %param_1.1), dimensions={}, metadata={op_name="jit(fn)/jit(main)/div" source_file="/home/jonkhler/dev/c++/xla/example/foo.py" source_line=7}
+  %param_0.1 = f32[4]{0} parameter(0)
+  ROOT %divide.0 = f32[4]{0} divide(f32[4]{0} %broadcast.0, f32[4]{0} %param_0.1), metadata={op_name="jit(fn)/jit(main)/div" source_file="/home/jonkhler/dev/c++/xla/example/foo.py" source_line=7}
+}
+
+ENTRY %main.7 (Arg_0.1: f32[4], Arg_1.2: f32[4], Arg_2.3: f32[4]) -> f32[4] {
+  %Arg_2.3 = f32[4]{0} parameter(2)
+  %Arg_0.1 = f32[4]{0} parameter(0)
+  %Arg_1.2 = f32[4]{0} parameter(1)
+  %dot.4 = f32[] dot(f32[4]{0} %Arg_0.1, f32[4]{0} %Arg_1.2), lhs_contracting_dims={0}, rhs_contracting_dims={0}, metadata={op_name="jit(fn)/jit(main)/dot_general[dimension_numbers=(((0,), (0,)), ((), ())) precision=None preferred_element_type=float32]" source_file="/home/jonkhler/dev/c++/xla/example/foo.py" source_line=7}
+  ROOT %fusion = f32[4]{0} fusion(f32[4]{0} %Arg_2.3, f32[] %dot.4), kind=kLoop, calls=%fused_computation, metadata={op_name="jit(fn)/jit(main)/div" source_file="/home/jonkhler/dev/c++/xla/example/foo.py" source_line=7}
+}
+
